@@ -1,0 +1,92 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD com.example.Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.vue.DAO.UsersMapper">
+
+    <resultMap id="result" type="com.example.vue.entity.User">
+        <result property="userId" column="userId" />
+        <result property="userDate" column="userDate" />
+        <result property="userName" column="userName" />
+        <result property="userAddress" column="userAddress"/>
+        <result property="userPhone" column="userPhone"/>
+        <result property="userPoli" column="userPoli"/>
+        <result property="numTime" column="numTime"/>
+    </resultMap>
+
+    <select id="selectPage" resultType="com.example.vue.entity.User">
+        select * from user
+        <where>
+            <if test="userName != null and userName != ''">
+                userName like concat('%',#{userName},'%')
+            </if>
+        </where>
+        order by userId desc
+        limit #{pageNum}, #{pageSize}
+    </select>
+
+    <select id="selectTotall" resultType="Integer">
+        select count(*) from user
+        <where>
+            <if test="userName != null and userName != ''">
+                userName like concat('%',#{userName},'%')
+            </if>
+        </where>
+        order by userId desc
+    </select>
+
+
+
+    <insert id="insertUser" parameterType="com.example.vue.entity.User">
+        INSERT INTO user
+        (
+            userId,userDate,userName,userAddress,userPhone,numTime,userPoli,userEmail,userGender,userEdu,userAge
+        )
+        VALUES (
+                   #{userId},
+                   #{userDate, jdbcType=VARCHAR},
+                   #{userName, jdbcType=VARCHAR},
+                   #{userAddress, jdbcType=VARCHAR},
+                   #{userPhone, jdbcType=VARCHAR},
+                   #{numTime},
+                   #{userPoli, jdbcType=VARCHAR},
+                   #{userEmail, jdbcType=VARCHAR},
+                   #{userGender, jdbcType=VARCHAR},
+                   #{userEdu, jdbcType=VARCHAR},
+                   #{userAge}
+               )
+    </insert>
+
+    <delete id="delete" parameterType="int">
+        delete from user where userId=#{userId}
+    </delete>
+
+    <update id="Update" parameterType="com.example.vue.entity.User">
+        update user
+        set user.userDate=#{userDate},
+            user.userName=#{userName},
+            user.userAddress=#{userAddress},
+            user.userPhone=#{userPhone},
+            user.userPoli=#{userPoli},
+            user.numTime=#{numTime},
+            user.userGender=#{userGender},
+            user.userEdu=#{userEdu},
+            user.userEmail=#{userEmail},
+            user.userAge=#{userAge}
+        where user.userId=#{userId}
+    </update>
+
+    <select id="selectone" resultType="Integer">
+        select count(*) from user where userPoli = "中共党员";
+    </select>
+    <select id="selecttwo" resultType="Integer">
+        select count(*) from user where userPoli = "中共预备党员";
+    </select>
+    <select id="selectthree" resultType="Integer">
+        select count(*) from user where userPoli = "共青团员";
+    </select>
+    <select id="selectfour" resultType="Integer">
+        select count(*) from user where userPoli = "群众";
+    </select>
+
+</mapper>

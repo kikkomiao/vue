@@ -1,0 +1,43 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD com.example.Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.vue.DAO.LoginMapper">
+
+    <select id="selectByAccount" resultType="com.example.vue.entity.Login">
+        select phone,password,name,idcard,email,gender from login
+        where idcard = #{idcard} and password = #{password};
+    </select>
+
+    <select id="selectExist" resultType="java.lang.Integer">
+        select count(*) from login
+        where idcard = #{idcard};
+    </select>
+    <select id="selectPassword" resultType="java.lang.Integer">
+        select count(*) from login
+        where idcard = #{idcard} and password = #{password};
+    </select>
+    <update id="updateInfo" parameterType="com.example.vue.entity.Login">
+        update login set name = #{name},gender = #{gender},email=#{email},phone =#{phone} where idcard =#{idcard}
+    </update>
+
+    <update id="updatePassword" parameterType="com.example.vue.entity.Login">
+        update login set password = #{password} where idcard =#{idcard}
+    </update>
+
+    <insert id="insertInfo" parameterType="com.example.vue.entity.Login">
+        INSERT INTO login
+        (
+            idcard,name,password,phone,email,gender
+        )
+        VALUES (
+                   #{idcard},
+                   #{name},
+                   #{password},
+                   #{phone},
+                   #{email},
+                   #{gender}
+               )
+    </insert>
+
+</mapper>
